@@ -10,7 +10,6 @@ public class Main {
         // NUEVO REQUERIMIENTO: el banco quiere notificar por WhatsApp
         servicio.notificarTransferencia("WHATSAPP", "camilo", 50000);
 
-        System.out.println();
-        System.out.println("ESPERADO -> la linea de WhatsApp debe aparecer, sin agregar otro 'else if'");
+
     }
 }

@@ -1,24 +1,30 @@
-# Taller 11 · Ejercicio 1 — Domicilios Rappi
+# Domicilios Rapidito - Ejercicio 1 :b
 
-Programación 1 (POO) · Universidad Libre · Docente: Andrés Castaño
+## Descripción del Problema
+En la versión inicial del sistema, el administrador activaba un recargo por lluvia, pero este no se reflejaba en el precio final del cliente ni en las ganancias del repartidor. Además, el archivo de configuración (config.properties) se leía de manera redundante cada vez que un componente requería acceder a los datos.
 
-## Situación
+Esto ocurría porque las clases PanelAdmin :D, CalculadoraDomicilio y AppRepartidor estaban creando instancias independientes de la configuración mediante la instrucción new ConfiguracionApp(). 
 
-El administrador activa el recargo por lluvia, pero el cliente sigue viendo el precio normal y el repartidor no recibe el recargo. Además, la configuración se lee del disco cada vez que alguien la necesita.
+## La Solución
+Se aplicó el patrón de diseño creacional **Singleton** en la clase ConfiguracionApp. Este patrón restringe la instanciación de una clase a un solo objeto y proporciona un punto de acceso global a él.
 
-## Cómo ejecutar
+## ¿Qué se cambió?
 
-```bash
-javac -d out src/*.java
-java -cp out Main
-```
+1. **En `ConfiguracionApp.java` (La clase de configuración):**
+   * Se cambió el modificador de acceso del constructor de `public` a `private` para evitar que otras clases usen la palabra reservada `new`.
+   * Se agregó un atributo privado y estático para almacenar la única instancia de la clase (`private static ConfiguracionApp instancia;`).
+   * Se creó el método público y estático `getInstance()` que evalúa si la instancia ya existe; si no existe, la crea (Lazy Initialization), y finalmente la retorna.
 
-Al final de la salida, la línea **ESPERADO** dice cómo debe verse el programa cuando quede corregido.
+2. **En las clases consumidoras (`PanelAdmin.java`, `CalculadoraDomicilio.java`, `AppRepartidor.java`):**
+   * Se eliminaron todas las líneas donde se hacía: `ConfiguracionApp config = new ConfiguracionApp();`.
+   * Se reemplazaron por el llamado al método global: `ConfiguracionApp config = ConfiguracionApp.getInstance();`.
 
-## Qué hacer
+## ¿Por qué lo cambiamos?
 
-1. Ejecute el código tal como está y observe la diferencia con lo **ESPERADO**.
-2. Identifique en el código la(s) línea(s) que delatan el problema.
-3. Decida qué patrón creacional aplica (Singleton, Factory Method o Builder) y refactorice.
-4. Ajuste `Main.java` solo en lo necesario para usar su solución (no borre los casos de prueba).
-5. Haga commit y push de su solución en este repositorio.
+* **Consistencia de los datos (Estado Compartido):** Al tener una única instancia en toda la aplicación, cuando `PanelAdmin` modifica el estado interno activando el recargo (`setRecargoLluvia(2000)`), ese cambio persiste en la memoria. Así, cuando la calculadora y el repartidor solicitan los valores, leen exactamente la misma instancia actualizada.
+* **Optimización de recursos:** El constructor de la clase simulaba una operación costosa (lectura de disco). Al usar Singleton, garantizamos que esta carga pesada se ejecute **una sola vez** en el ciclo de vida de la aplicación, mejorando el rendimiento. 
+
+## Resultados esperados al ejecutar (`Main.java`)
+* Configuración cargada 1 sola vez (`carga #1`).
+* El domicilio de 3 km cuesta **$8.900**.
+* El repartidor gana **$4.400**.
