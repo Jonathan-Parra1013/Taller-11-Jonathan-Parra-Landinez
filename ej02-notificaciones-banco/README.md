@@ -1,4 +1,4 @@
-# BancoPlata - Ejercicio de Refactorización
+# BancoPlata - Ejercicio 2 :D
 
 ## Descripción del Problema
 El banco digital notifica transferencias y códigos de seguridad por SMS, correo y push. El área de producto solicitó agregar el canal de WhatsApp, pero la notificación simplemente no salía. 

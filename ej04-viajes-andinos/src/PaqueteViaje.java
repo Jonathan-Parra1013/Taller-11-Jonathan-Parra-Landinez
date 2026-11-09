@@ -1,41 +1,80 @@
 public class PaqueteViaje {
 
-    private String destino;     // obligatorio
-    private int noches;         // obligatorio, minimo 1
-    private boolean vuelo;
-    private String hotel;
-    private boolean desayuno;
-    private String tour;
-    private boolean seguroViaje;
+    // Atributos si o si
+    private final String destino;
+    private final int noches;
+    private final boolean vuelo;
+    private final String hotel;
+    private final boolean desayuno;
+    private final String tour;
+    private final boolean seguroViaje;
 
-    public PaqueteViaje() { }
 
-    public PaqueteViaje(String destino, int noches) {
-        this.destino = destino;
-        this.noches = noches;
+    private PaqueteViaje(Builder builder) {
+        this.destino = builder.destino;
+        this.noches = builder.noches;
+        this.vuelo = builder.vuelo;
+        this.hotel = builder.hotel;
+        this.desayuno = builder.desayuno;
+        this.tour = builder.tour;
+        this.seguroViaje = builder.seguroViaje;
     }
 
-    public PaqueteViaje(String destino, int noches, boolean vuelo, String hotel) {
-        this(destino, noches);
-        this.vuelo = vuelo;
-        this.hotel = hotel;
-    }
 
-    public PaqueteViaje(String destino, int noches, boolean vuelo, String hotel,
-                        boolean desayuno, String tour, boolean seguroViaje) {
-        this(destino, noches, vuelo, hotel);
-        this.desayuno = desayuno;
-        this.tour = tour;
-        this.seguroViaje = seguroViaje;
-    }
+    public static class Builder {
 
-    public void setDestino(String destino)       { this.destino = destino; }
-    public void setNoches(int noches)            { this.noches = noches; }
-    public void setVuelo(boolean vuelo)          { this.vuelo = vuelo; }
-    public void setHotel(String hotel)           { this.hotel = hotel; }
-    public void setDesayuno(boolean desayuno)    { this.desayuno = desayuno; }
-    public void setTour(String tour)             { this.tour = tour; }
-    public void setSeguroViaje(boolean seguro)   { this.seguroViaje = seguro; }
+        private String destino;
+        private int noches;
+
+        private boolean vuelo = false;
+        private String hotel = null;
+        private boolean desayuno = false;
+        private String tour = null;
+        private boolean seguroViaje = false;
+
+        // Constructor obligatorio con los parámetros esenciales
+        public Builder(String destino, int noches) {
+            if (destino == null || destino.trim().isEmpty()) {
+                throw new IllegalArgumentException("El destino es obligatorio.");
+            }
+            if (noches < 1) {
+                throw new IllegalArgumentException("El paquete debe tener al menos 1 noche. Rechazado: " + noches);
+            }
+            this.destino = destino;
+            this.noches = noches;
+        }
+
+
+        public Builder conVuelo() {
+            this.vuelo = true;
+            return this;
+        }
+
+        public Builder conHotel(String hotel) {
+            this.hotel = hotel;
+            return this;
+        }
+
+        public Builder conDesayuno() {
+            this.desayuno = true;
+            return this;
+        }
+
+        public Builder conTour(String tour) {
+            this.tour = tour;
+            return this;
+        }
+
+        public Builder conSeguroViaje() {
+            this.seguroViaje = true;
+            return this;
+        }
+
+        // Build que construye :D
+        public PaqueteViaje build() {
+            return new PaqueteViaje(this);
+        }
+    }
 
     @Override
     public String toString() {
