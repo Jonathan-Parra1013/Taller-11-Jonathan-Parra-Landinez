@@ -1,7 +1,8 @@
 public class Ventanilla {
 
     private String nombre;
-    private GeneradorTurnos generador = new GeneradorTurnos();
+    // Se usa la instancia compartida en lugar de crear una nueva :D
+    private GeneradorTurnos generador = GeneradorTurnos.getInstance();
 
     public Ventanilla(String nombre) {
         this.nombre = nombre;

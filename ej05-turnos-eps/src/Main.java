@@ -11,7 +11,6 @@ public class Main {
         v1.asignarTurno("Luis");
         kiosco.pedirTurno("Camila");
 
-        System.out.println();
-        System.out.println("ESPERADO -> T-001, T-002, T-003, T-004, T-005 (nunca un turno repetido)");
+
     }
 }
