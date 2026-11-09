@@ -1,6 +1,7 @@
 public class AppWeb {
 
-    private MapaSillas mapa = new MapaSillas();
+    // En AppWeb.java y TaquillaFisica.java se cambio
+    private MapaSillas mapa = MapaSillas.getInstance();
 
     public void comprar(Boleta boleta) {
         if (mapa.reservar(boleta.getSilla())) {
